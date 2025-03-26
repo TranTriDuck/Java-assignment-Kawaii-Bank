@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Account
+comment0.text=\r\n\r\n\ Accounts\ will\ include\ the\ following\ information\:\r\n\ \ \ \ Customer\ name\r\n\ \ \ \ Account\ number\r\n\ \ \ \ Customer\ address\r\n\ \ \ \ Account\ type\r\n\ \ \ \ Current\ balance\r\n\r\n\ \ \ \ Duc\ Tran\ Tri\r\n\ \ \ \ \r\n\ \ \ \ 24/3/2025\r\n
+comment1.params=name\ number\ address\ type\ balance
+comment1.target=Account(java.lang.String,\ int,\ java.lang.String,\ java.lang.String,\ java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment3.params=
+comment3.target=int\ getNumber()
+comment4.params=
+comment4.target=java.lang.String\ getAddress()
+comment5.params=
+comment5.target=java.lang.String\ getType()
+comment6.params=
+comment6.target=java.lang.String\ getBalance()
+numComments=7
