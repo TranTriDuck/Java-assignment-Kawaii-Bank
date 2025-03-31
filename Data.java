@@ -1,29 +1,29 @@
 
 public class Data {
-    private String name;
-    private int number;
+    private String username;
+    private String accountnumber;
     private String address;
     private String type;
-    private String balance;
-    private boolean isCompleted; // Update the completion status of the data
+    private double balance;
 
-    public Data (String name, int number, String address, String type, String balance)
+    public Data (String username, String accountnumber, String address, String type, double balance)
     {
-        this.name = name;
-        this.number = number;
+        this.username = username;
+        this.accountnumber = accountnumber;
         this.address = address;
         this.type = type;
         this.balance = balance;
     }
 
-    public String getName()
+    //Getter for 
+    public String getUsername()
     {
-        return name;
+        return username;
     }
 
-    public int getNumber()
+    public String getAccountNumber()
     {
-        return number;
+        return accountnumber;
     }
 
     public String getAddress()
@@ -36,26 +36,23 @@ public class Data {
         return type;
     }
 
-    public String getBalance()
+    public double getBalance()
     {
         return balance;
     }
 
-    public void markIncomplete()
-    {
-        isCompleted = false;
-    }   
+    //
 
-@Override
+
+    @Override 
     public String toString()
     {
         return "Data{" +
-                "name='" + name + '\'' +
-                ", number=" + number +
+                "username='" + username + '\'' +
+                ", number=" + accountnumber +
                 ", address='" + address + '\'' +
                 ", type='" + type + '\'' +
-                ", balance='" + balance + '\'' +
-                ", isCompleted=" + isCompleted +
+                ", balance='" + balance +
                 '}';
     }
 } 
