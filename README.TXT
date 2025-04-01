@@ -16,5 +16,8 @@ all they need to know. The comments should usually include at least:
  Program does not have output and can not get input from the user yet.
 
  VERSION or DATE: 2, 1-4-2025
- UPDATED: F option which is exiting program now working well.
-          A option now can get inout from the user to create the name of account and account number.
+ UPDATED: 
+ Main class:
+
+ - F option which is exiting program now working well.
+ - A option now can get inout from the user to create the name of account and account number.
