@@ -6,99 +6,134 @@
  * @author Duc Tran Tri
  * @version 24/3/2025
  */
-
+import java.io.File;
 import java.util.Scanner;
 // import java.util.ArrayList;
 // import java.util.List;
 // import java.util.Arrays;
 // import java.time.LocalDate;
 // import java.time.format.DateTimeFormatter;
-// import java.io.File;
 // import java.io.FileNotFoundException;
-// import java.io.FileWriter;
-// import java.io.IOException;
+import java.io.FileWriter;
+import java.io.IOException;
 // import java.util.Collections;
 
 public class Main
 {
-    public static void main (String [] args){
+    public static void main (String [] args)
+    {
 
-        // Accountmanager accountmanager = new Accountmanager();// Create an AccountManager object
+        // controlpanel instance for managing accounts
+        ControlPanel controlpanel = new ControlPanel();
 
         //Set up scanner allow for teller put in
         Scanner scanner = new Scanner(System.in);
         
-        // Create an array of possible suits (H. Dumpty, Peter Piper, Simon Sez)
-
-        String[] accountnumbers = {"8-0101-0423087-00", "8-0101-0423087-00", "8-0101-0423087-00"};
-
-        String[] accountnames = {"Mr. Dumpty Dummy", "Mr. Peter Piper Pepper", "Mr. Simon Sez Swager"};
-
-        String[] usernames = {"H. Dumpty", "Peter Piper", "Simon Sez"};
+        File myAccountFile = new File("saveData.txt"); // File name for account data
         
-        String[] addresses = {"14 Mt View St Wellington", "48B Mitchel Way Wellington", "118 The Shoreline Wellington"};
-        
-        String[] types = {"Savings", "Everyday", "Current"}; 
+        //Load the account data from the file
+        try {
+            /*write to the file*/
+            FileWriter myWriter = new FileWriter(myAccountFile);
 
-        double balance = 0.0; // Initial balance for the account
-        
-    boolean running = true; // Main loop control variable
-        
-    while (running) {
-        // Display the main menu
-        System.out.println("\nKawaii Bank");
-        System.out.println("A. Create a new account");
-        System.out.println("B. Deposit money into an account");
-        System.out.println("C. Withdraw money from an account");
-        System.out.println("D. Transfer money between accounts");
-        System.out.println("E. Display account details");
-        System.out.println("F. Exit");
-        System.out.println("Please enter your the number of choice for the following options: ");
-    
-    
-    // Get the user' choice, ensuring it is a valid string
-    String choice = scanner.nextLine();
-    
-    switch (choice){
-        case "A":
-            //When user type in "A", create a new account
-            System.out.print("Enter your account name: ");
-            String name = scanner.nextLine();
-            name = name.trim();
-
-            //Then get the number of the account
-            System.out.print("Enter your account number in this format 00-0000-0000000-00 (e.g: 8-0101-0423087-00): ");
-
-            String accountnumber = scanner.nextLine();
-            accountnumber = accountnumber.trim();
-
+            //write the size of the array list
+            myWriter.write("Number of accounts: " + controlpanel.getaccounts().size() + "\n");
             
-        case "B": 
-            //When user type in "B", Deposit money into an account
-            //Get the amount of money to deposit
-            // System.out.print("Enter the amount of money to deposit: ");
-            // int deposit = scanner.nextInt();
-            scanner.nextLine();
+            //write the array list of accounts
+            for (int i = 0; i < controlpanel.getaccounts().size(); i++) {
+                myWriter.write("Account " + (i + 1) + ": " + controlpanel.getaccounts().get(i) + "\n");
+            }
 
-        case "C":
-            //When user type in "C", Withdraw money from an account
+
+            //write the account data into the file
+            myWriter.write("Account data:\n");
+            myWriter.write("Account number: " + controlpanel.getaccounts() + "\n");
+            myWriter.write("Address: " + controlpanel.getaccounts() + "\n");
+            myWriter.write("Account type: " + controlpanel.getaccounts() + "\n");
+            myWriter.write("Balance: " + controlpanel.getaccounts() + "\n");
+           
+            /*clean up */
+            myWriter.flush();
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("ERROR: Could not write file");
+        }
+    
+
+    boolean programcondition = true; // Main loop control variable
+        
+    while (programcondition) {
+        // Display the main menu
+        System.out.println("Welcome to Kawaii Bank");
+        System.out.println("|-----------------------------------MENU------------------------------------|");
+        System.out.println("A. Create a new account");
+        System.out.println("B. Delete an account");
+        System.out.println("C. Deposit money into an account");
+        System.out.println("D. Withdraw money from an account");
+        System.out.println("E. Transfer money between accounts");
+        System.out.println("F. Display account details");
+        System.out.println("G. Exit and save the data");    
+        System.out.println("Please enter your character option of choice for the following options: ");
+        
+        // Auto uppercase the input
+        // Get the user' choice, ensuring it is a valid string which means it will be invalid if the user types in a number or a special character
+        String option = scanner.nextLine().toUpperCase();
+    
+    
+
+    switch (option){
+        case "A":
+            //When user type in "A", create a new account with createaccount method
+            controlpanel.createaccount();
+            break;
+        
+        case "B":
+            //When user type in "B", delete an account
+            System.out.print("Enter the account number to delete: ");
+            String deleteaccountnumber = scanner.nextLine();
+
+            //Delete the account using the account manager
+            controlpanel.deleteaccount(deleteaccountnumber);
+
+            break;
+
+        case "C": 
+            //When user type in "C", Deposit money into an account
+            System.out.print("Enter the account number to deposit into: ");
+            String depositaccountnumber = scanner.nextLine();
+
+            System.out.print("Enter the amount to deposit: ");
+            double depositamount = scanner.nextDouble();
+            scanner.nextLine(); // Consume the newline character
+
+            //Calling the deposit method from the account manager
+            controlpanel.deposit(depositaccountnumber, depositamount);
+            
+     
+            break;
 
         case "D":
-            //When user type in "D", Transfer money between accounts
+            //When user type in "C", Withdraw money from an account
 
         case "E":
-            //When user type in "E", Display account details
-            //Print the inforamtion of the account
-            System.out.println("Account Name: " + accountnames[0]);
-            System.out.println("Account Number: " + accountnumbers[0]);
-            System.out.println("Username: " + usernames[0]);
-            System.out.println("Address: " + addresses[0]);
-            System.out.println("Type: " + types[0]);
-            System.out.println("Balance: " + balance);
+            //When user type in "E", Transfer money between accounts
 
         case "F":
-            //When user type in "F", Exit the program
-            running = false;
+            //When user type in "F", Display account details
+            //Print the inforamtion of the account
+            System.out.print("Enter the account number to display: ");
+            String displayaccountnumber = scanner.nextLine();
+            Account displayaccount = controlpanel.findaccountthroughnumber(displayaccountnumber); // Find the account using the account number
+            if (displayaccount != null) { // Check if the account exists
+                System.out.println("Account details: " + displayaccount.toString());
+            } else {
+                System.out.println("Account not found. Please check the account number and try again.");
+            }
+
+            break;
+        case "G":
+            //When user type in "G", Exit the program and save the data
+            programcondition = false;
             System.out.println("Exiting the program. Thank you for using Kawaii Bank!");
             break;
         
@@ -112,3 +147,4 @@ public class Main
     scanner.close();
     }
 }
+
