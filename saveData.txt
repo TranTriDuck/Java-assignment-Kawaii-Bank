@@ -1,6 +1,2 @@
 Number of accounts: 0
 Account data:
-Account number: []
-Address: []
-Account type: []
-Balance: []

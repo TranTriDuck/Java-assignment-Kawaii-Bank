@@ -29,7 +29,7 @@ public class Account
     private String address; // The address of the account holder
    private String type; // The type of the account
 
-   
+   //Constructor to create a new account with a name, number, address, type and balance
    public Account (String accountname, String accountnumber, String address, String type, double balance) {
         this.accountname = accountname;
         this.accountnumber = accountnumber; 
@@ -40,18 +40,28 @@ public class Account
    }
 
     //Adding getter for accountname
-     public String getaccountname() {
-             return accountname;
+     public String getAccountName() {
+             return accountname;    
      }
    //Adding getter for balance
-    public double getbalance() {
+    public double getBalance() {
           return balance;
     }
 
 
    //Getting acountnumber
-    public String getaccountnumber() {
+    public String getAccountNumber() {
           return accountnumber;
+    }
+
+    //Getting address
+    public String getAddress() {
+          return address;
+    }
+
+    //Getting type
+    public String getAccountType() {
+          return type;
     }
 
     //Updating balance of a account method
@@ -64,10 +74,17 @@ public class Account
         balance += depositamount;
     }
 
+    //Updating balance of a account method into account 
+    public void updateBalance(double amount) {
+        this.balance += amount;
+    }
+
+    //Returning data of the account into a string
     @Override
     public String toString() {
         return "\n🏦 Account Details 🏦\n" +
                "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔\n" +
+               "👤 Account Holder: " + accountname + "\n" +
                "🔢 Account Number: " + accountnumber + "\n" +
                "🏠 Address: " + address + "\n" +
                "💼 Account Type: " + type + "\n" +
