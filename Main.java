@@ -110,59 +110,17 @@ public class Main
         case "C": 
             //When user type in "C", Deposit money into an account
             System.out.print("Enter the account number to deposit into: ");
-            String depositaccountnumber = scanner.nextLine();
-    
-
-           // Validate the deposit amount
-    // Ensure the deposit amount is a positive number
-    boolean validDeposit = false;
-    double depositamount = 0;
-    while (!validDeposit) {
-        try {
-            System.out.print("Enter the amount to deposit: ");
-            depositamount = scanner.nextDouble();
-            scanner.nextLine();  // Consume newline
-            
-            if(depositamount > 0) {
-                validDeposit = true;
-            } else {
-                System.out.println("❌ Amount must be positive!");
-            }
-        } catch (Exception e) {
-            System.out.println("❌ Invalid input! Numbers only please!");
-            scanner.nextLine();  // Clear invalid input
-        }
-    }
-    controlPanel.deposit(depositaccountnumber, depositamount);
+            String depositAccountNumber = scanner.nextLine();
+             double depositAmount = getValidAmount(scanner, "Enter the amount to deposit: ");
+            controlPanel.deposit(depositAccountNumber, depositAmount);
+            controlPanel.logTransaction("Deposit of $" + depositAmount + " into account " + depositAccountNumber);
     break;
 
         case "D":
             //When user type in "D", Withdraw money from an account
-            System.out.print("Enter the account number to withdraw from: ");
+           System.out.print("Enter the account number to withdraw from: ");
             String withdrawAccountNumber = scanner.nextLine();
-            double withdrawAmount = getValidAmount(scanner, "Enter the amount to withdraw: ");
-            controlPanel.withdraw(withdrawAccountNumber, withdrawAmount);
-            // Validate the withdraw amount
-            // Ensure the withdraw amount is a positive number
-            boolean validWithdraw = false;
-            double withdrawamount = 0;
-            while (!validWithdraw) {
-                try {
-                    System.out.print("Enter the amount to withdraw: ");
-                    withdrawamount = scanner.nextDouble();
-                    scanner.nextLine();  // Consume newline
-                    
-                    if(withdrawamount > 0) {
-                        validWithdraw = true;
-                    } else {
-                        System.out.println("❌ Amount must be positive!");
-                    }
-                } catch (Exception e) {
-                    System.out.println("❌ Invalid input! Numbers only please!");
-                    scanner.nextLine();  // Clear invalid input
-                }
-            }
-            controlPanel.withdraw(withdrawAccountNumber, withdrawamount);
+            double withdrawAmount = getValidAmount(scanner, "Enter the amount to withdraw: ");                controlPanel.withdraw(withdrawAccountNumber, withdrawAmount);
             break;
         case "E":
 
@@ -192,10 +150,15 @@ public class Main
             // Save account data to CSV file
             controlPanel.saveToCSV(DEFAULT_CSV_FILE); // Save account data to CSV file
           
+             // Display transactions and total balance
+            System.out.println("\n📜 Transaction History:");
+            for (String transaction : controlPanel.getTransactions()) {
+            System.out.println(transaction);
+            }
+            System.out.println("\n💰 Total Balance of All Accounts: $" + String.format("%,.2f", controlPanel.calculateTotalBalance()));
+
             programcondition = false;
             System.out.println("Exiting the program. Thank you for using Kawaii Bank!");
-
-         
             break;
         
         //In case the teller type in an unexpected variables, characters, or numbers. Print out an error message and ask the teller to try again.

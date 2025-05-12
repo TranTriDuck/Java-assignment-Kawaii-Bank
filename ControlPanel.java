@@ -5,12 +5,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner; 
 
 //Manage teller's accounts in account manager array list
 public class ControlPanel {
     private ArrayList<Account> accounts; // Array list collection of accounts
     
+    private List<String> transactions; // List of transactions
+
     private Scanner scanner; // Scanner object for user input
 
     private static final String DEFAULT_CSV_FILE = "account_data.csv"; // Default CSV file name
@@ -53,8 +56,71 @@ public class ControlPanel {
     //Creating constructor for ControlPanel class
     public ControlPanel() {
         accounts = new ArrayList<>(); // Initialize the array list of accounts
+        transactions = new ArrayList<>(); // Initialize the list of transactions
     }
 
+      // Add a transaction log
+    public void logTransaction(String transaction) {
+        transactions.add(transaction);
+    }
+
+     // Calculate the total balance of all accounts
+    public double calculateTotalBalance() {
+        double totalBalance = 0;
+        for (Account account : accounts) {
+            totalBalance += account.getBalance();
+        }
+        return totalBalance;
+    }
+
+    // Example: Update withdraw method to log transactions
+    public void withdraw(String accountNumber, double amount) {
+        Account account = findAccountThroughNumber(accountNumber);
+        if (account != null) {
+            if (amount > 5000) {
+                System.out.println("❌ Withdrawal amount exceeds the $5000 limit.");
+                return;
+            }
+            if (account.getBalance() >= amount) {
+                account.updateBalance(-amount);
+                logTransaction("Withdrawal of $" + amount + " from account " + accountNumber);
+                System.out.println("✅ Withdrawal successful!");
+            } else {
+                System.out.println("❌ Insufficient funds.");
+            }
+        } else {
+            System.out.println("❌ Account not found.");
+        }
+    }
+
+    // Example: Update transfer method to log transactions
+    public void transfer(String fromAccountNumber, String toAccountNumber, double amount) {
+        Account fromAccount = findAccountThroughNumber(fromAccountNumber);
+        Account toAccount = findAccountThroughNumber(toAccountNumber);
+        if (fromAccount != null && toAccount != null) {
+            if (amount > 5000) {
+                System.out.println("❌ Transfer amount exceeds the $5000 limit.");
+                return;
+            }
+            if (fromAccount.getBalance() >= amount) {
+                fromAccount.updateBalance(-amount);
+                toAccount.updateBalance(amount);
+                logTransaction("Transfer of $" + amount + " from account " + fromAccountNumber + " to " + toAccountNumber);
+                System.out.println("✅ Transfer successful!");
+            } else {
+                System.out.println("❌ Insufficient funds.");
+            }
+        } else {
+            System.out.println("❌ One or both accounts not found.");
+        }
+    }
+
+
+
+    // Get all transactions
+    public List<String> getTransactions() {
+        return transactions; // Return the list of transaction logs
+    }
     
     //Method to find an account using the account number
     public Account findaccountthroughnumber(String accountnumber) {
@@ -102,83 +168,83 @@ public class ControlPanel {
         }
     }
 
-    //Method to withdraw money from the account which is "D" option
-    public void withdraw(String accountNumber, double amount) {
-        // Find the account using the account number
-        Account account = findAccountThroughNumber(accountNumber);
-        // Check if the account exists
-        if (account != null) {
-            // Check if the withdrawal amount exceeds the limit which is $5000
-            // The limit is set to $5000 for all account types
-            if (amount > 5000) {
-                // Print error message if the withdrawal amount exceeds the limit
-                System.out.println("❌ Withdrawal amount exceeds the $5000 limit.");
-                return;
-            }
-            // Check the account type and apply withdrawal rules
-            // For Everyday and Savings accounts, check if the user's balance is sufficient
-            if (account.getAccountType().equalsIgnoreCase("Everyday") || account.getAccountType().equalsIgnoreCase("Savings")) {
-                if (account.getBalance() >= amount) {
-                    account.updateBalance(-amount);
-                    System.out.println("✅ Withdrawal successful!");
-                } else {
-                    System.out.println("❌ Insufficient funds. Everyday and Savings accounts cannot go into debt.");
-                }
-            // For Current accounts, check if the user's balance is sufficient with overdraft limit
-            } else if (account.getAccountType().equalsIgnoreCase("Current")) {
-                // Check if the withdrawal amount exceeds the overdraft limit of $1000
-                if (account.getBalance() - amount >= -1000) {
-                    // Update the balance with the withdrawal amount
-                    account.updateBalance(-amount);
-                    System.out.println("✅ Withdrawal successful!");
-                } else {
-                    // Print error message if the withdrawal amount exceeds the overdraft limit
-                    System.out.println("❌ Insufficient funds. Current accounts have a $1000 overdraft limit.");
-                }
-            } else {
-                System.out.println("❌ Unknown account type.");
-            }
-        } else {
-            System.out.println("❌ Account not found.");
-        }
-    }
+    // //Method to withdraw money from the account which is "D" option
+    // public void withdraw(String accountNumber, double amount) {
+    //     // Find the account using the account number
+    //     Account account = findAccountThroughNumber(accountNumber);
+    //     // Check if the account exists
+    //     if (account != null) {
+    //         // Check if the withdrawal amount exceeds the limit which is $5000
+    //         // The limit is set to $5000 for all account types
+    //         if (amount > 5000) {
+    //             // Print error message if the withdrawal amount exceeds the limit
+    //             System.out.println("❌ Withdrawal amount exceeds the $5000 limit.");
+    //             return;
+    //         }
+    //         // Check the account type and apply withdrawal rules
+    //         // For Everyday and Savings accounts, check if the user's balance is sufficient
+    //         if (account.getAccountType().equalsIgnoreCase("Everyday") || account.getAccountType().equalsIgnoreCase("Savings")) {
+    //             if (account.getBalance() >= amount) {
+    //                 account.updateBalance(-amount);
+    //                 System.out.println("✅ Withdrawal successful!");
+    //             } else {
+    //                 System.out.println("❌ Insufficient funds. Everyday and Savings accounts cannot go into debt.");
+    //             }
+    //         // For Current accounts, check if the user's balance is sufficient with overdraft limit
+    //         } else if (account.getAccountType().equalsIgnoreCase("Current")) {
+    //             // Check if the withdrawal amount exceeds the overdraft limit of $1000
+    //             if (account.getBalance() - amount >= -1000) {
+    //                 // Update the balance with the withdrawal amount
+    //                 account.updateBalance(-amount);
+    //                 System.out.println("✅ Withdrawal successful!");
+    //             } else {
+    //                 // Print error message if the withdrawal amount exceeds the overdraft limit
+    //                 System.out.println("❌ Insufficient funds. Current accounts have a $1000 overdraft limit.");
+    //             }
+    //         } else {
+    //             System.out.println("❌ Unknown account type.");
+    //         }
+    //     } else {
+    //         System.out.println("❌ Account not found.");
+    //     }
+    // }
     
-    public void transfer(String fromAccountNumber, String toAccountNumber, double amount) {
-        Account fromAccount = findAccountThroughNumber(fromAccountNumber);
-        Account toAccount = findAccountThroughNumber(toAccountNumber);
+    // public void transfer(String fromAccountNumber, String toAccountNumber, double amount) {
+    //     Account fromAccount = findAccountThroughNumber(fromAccountNumber);
+    //     Account toAccount = findAccountThroughNumber(toAccountNumber);
     
-        // Check if both accounts exist
-        if (fromAccount != null && toAccount != null) {
-            // Check if the transfer amount exceeds the limit which is $5000
-            if (amount > 5000) {
-                System.out.println("❌ Transfer amount exceeds the $5000 limit.");
-                return;
-            }
+    //     // Check if both accounts exist
+    //     if (fromAccount != null && toAccount != null) {
+    //         // Check if the transfer amount exceeds the limit which is $5000
+    //         if (amount > 5000) {
+    //             System.out.println("❌ Transfer amount exceeds the $5000 limit.");
+    //             return;
+    //         }
     
-            if (fromAccount.getAccountType().equalsIgnoreCase("Everyday") || fromAccount.getAccountType().equalsIgnoreCase("Savings")) {
-                // Check if the user's balance is sufficient for Everyday and Savings accounts
-                if (fromAccount.getBalance() >= amount) {
-                    fromAccount.updateBalance(-amount);
-                    toAccount.updateBalance(amount);
-                    System.out.println("✅ Transfer successful!");
-                } else {
-                    System.out.println("❌ Insufficient funds. Everyday and Savings accounts cannot go into debt.");
-                }
-            } else if (fromAccount.getAccountType().equalsIgnoreCase("Current")) {
-                if (fromAccount.getBalance() - amount >= -1000) {
-                    fromAccount.updateBalance(-amount);
-                    toAccount.updateBalance(amount);
-                    System.out.println("✅ Transfer successful!");
-                } else {
-                    System.out.println("❌ Insufficient funds. Current accounts have a $1000 overdraft limit.");
-                }
-            } else {
-                System.out.println("❌ Unknown account type.");
-            }
-        } else {
-            System.out.println("❌ One or both accounts not found.");
-        }
-    }
+    //         if (fromAccount.getAccountType().equalsIgnoreCase("Everyday") || fromAccount.getAccountType().equalsIgnoreCase("Savings")) {
+    //             // Check if the user's balance is sufficient for Everyday and Savings accounts
+    //             if (fromAccount.getBalance() >= amount) {
+    //                 fromAccount.updateBalance(-amount);
+    //                 toAccount.updateBalance(amount);
+    //                 System.out.println("✅ Transfer successful!");
+    //             } else {
+    //                 System.out.println("❌ Insufficient funds. Everyday and Savings accounts cannot go into debt.");
+    //             }
+    //         } else if (fromAccount.getAccountType().equalsIgnoreCase("Current")) {
+    //             if (fromAccount.getBalance() - amount >= -1000) {
+    //                 fromAccount.updateBalance(-amount);
+    //                 toAccount.updateBalance(amount);
+    //                 System.out.println("✅ Transfer successful!");
+    //             } else {
+    //                 System.out.println("❌ Insufficient funds. Current accounts have a $1000 overdraft limit.");
+    //             }
+    //         } else {
+    //             System.out.println("❌ Unknown account type.");
+    //         }
+    //     } else {
+    //         System.out.println("❌ One or both accounts not found.");
+    //     }
+    // }
 
     //Method to display account details which is "D" option
     public void displayaccountdetails(String accountNumber) {
