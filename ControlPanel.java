@@ -12,6 +12,9 @@ public class ControlPanel {
     private ArrayList<Account> accounts; // Array list collection of accounts
     
     private Scanner scanner; // Scanner object for user input
+
+    private static final String DEFAULT_CSV_FILE = "account_data.csv"; // Default CSV file name
+
         public void createaccount() {
             scanner = new Scanner(System.in); // Initialize the scanner object
             //Prompt the user to create a new account
@@ -285,35 +288,27 @@ public class ControlPanel {
         }
     }
 
-    // Load account data from a file
-    public void loadData(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            accounts.clear(); // Clear existing accounts
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Account data:")) {
-                    while ((line = reader.readLine()) != null) {
-                        String[] parts = line.split(",");
-                        // Check if the line has the correct number of parts
-                        // Adjust the number of parts based on your data format
-                        if (parts.length == 5) {
-                            String accountName = parts[0];
-                            String accountNumber = parts[1];
-                            String address = parts[2];
-                            String accountType = parts[3];
-                            double balance = Double.parseDouble(parts[4]);
-                            // Create a new Account object and add it to the accounts list
-                            accounts.add(new Account(accountName, accountNumber, address, accountType, balance));
-                        }
-                    }
+  public void loadData(String filePath) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        accounts.clear(); // Clear existing accounts
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (!line.startsWith("Account Name")) { // Skip header row
+                String[] parts = line.split(",");
+                if (parts.length == 5) { // Ensure correct number of columns
+                    String accountName = parts[0];
+                    String accountNumber = parts[1];
+                    String address = parts[2];
+                    String accountType = parts[3];
+                    double balance = Double.parseDouble(parts[4]);
+                    accounts.add(new Account(accountName, accountNumber, address, accountType, balance));
                 }
             }
-            // Print the number of accounts loaded
-            System.out.println("Data loaded successfully!");
-        } catch (IOException e) {
-            // Print error message if file not found or cannot be read
-            System.out.println("ERROR: Could not load data from file.");
         }
+        System.out.println("Data loaded successfully from " + filePath);
+    } catch (IOException e) {
+        System.out.println("ERROR: Could not load data from file: " + filePath);
+    }
     }
 }
             

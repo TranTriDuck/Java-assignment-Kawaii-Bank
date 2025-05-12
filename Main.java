@@ -20,6 +20,7 @@ import java.util.Scanner;
 
 public class Main
 {
+    private static final String DEFAULT_CSV_FILE = "saveData.csv"; // Default CSV file name
     /**
      * Method to get a valid amount from the user.
      * Ensures the input is a positive number.
@@ -31,6 +32,9 @@ public class Main
     public static double getValidAmount(Scanner scanner, String prompt) {
         boolean valid = false;
         double amount = 0;
+
+
+
         while (!valid) {
             try {
                 System.out.print(prompt);
@@ -44,7 +48,7 @@ public class Main
             } catch (Exception e) {
                 System.out.println("❌ Invalid input! Numbers only please!");
                 scanner.nextLine(); // Clear invalid input
-            }
+            } 
         }
         return amount;
     }
@@ -54,12 +58,17 @@ public class Main
         // controlpanel instance for managing accounts
         ControlPanel controlPanel = new ControlPanel();
         //Creating a csv file
-        String myaccountfile = "saveData.csv"; // File name for account data
-        controlPanel.saveToCSV(myaccountfile); // Save account data to CSV file
+        // String myaccountfile = "saveData.csv"; // File name for account data
+        // controlPanel.saveToCSV(myaccountfile); // Save account data to CSV file
+
+        // Automatically load data from the default CSV file
+        System.out.println("Loading account data from " + DEFAULT_CSV_FILE + "...");
+        controlPanel.loadData(DEFAULT_CSV_FILE); // Load data from the CSV file
+
         //Set up scanner allow for teller put in
         Scanner scanner = new Scanner(System.in);
         
-    Account account = new Account("John Doe", "123456789", "123 Main St", "Savings", 1000.00);
+   
 
     boolean programcondition = true; // Main loop control variable
         
@@ -181,9 +190,8 @@ public class Main
         case "G":
            
             // Save account data to CSV file
-            controlPanel.saveToCSV(myaccountfile); // Save account data to CSV file
-            //When user type in "G", Exit the program and save the data
-            controlPanel.saveToCSV(myaccountfile); // Save account data to CSV file
+            controlPanel.saveToCSV(DEFAULT_CSV_FILE); // Save account data to CSV file
+          
             programcondition = false;
             System.out.println("Exiting the program. Thank you for using Kawaii Bank!");
 
