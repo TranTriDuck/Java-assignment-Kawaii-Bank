@@ -1,5 +1,8 @@
 #BlueJ class context
 comment0.target=Main
-comment1.params=args
-comment1.target=void\ main(java.lang.String[])
-numComments=2
+comment1.params=scanner\ prompt
+comment1.target=double\ getValidAmount(java.util.Scanner,\ java.lang.String)
+comment1.text=\r\n\ Method\ to\ get\ a\ valid\ amount\ from\ the\ user.\r\n\ Ensures\ the\ input\ is\ a\ positive\ number.\r\n\r\n\ @param\ scanner\ Scanner\ object\ for\ user\ input\r\n\ @param\ prompt\ \ Prompt\ message\ to\ display\r\n\ @return\ A\ valid\ positive\ double\ amount\r\n
+comment2.params=args
+comment2.target=void\ main(java.lang.String[])
+numComments=3

@@ -1,10 +1,10 @@
 //Importing necessary packages
-import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner; 
 
 //Manage teller's accounts in account manager array list
@@ -200,27 +200,51 @@ public class ControlPanel {
         }
     }
 
-    //  Method to save account data into a CSV file
-     public void saveAccountDataToCSV(String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            // Write the header row
-            writer.write("Account Name,Account Number,Address,Account Type,Balance\n");
+    // //  Method to save account data into a CSV file
+    //  public void saveAccountDataToCSV(String filePath) {
+    //     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+    //         // Write the header row
+    //         writer.write("Account Name,Account Number,Address,Account Type,Balance\n");
 
-            // Write account details
-            for (Account account : accounts) {
-                // Write each account's details in CSV format
-                writer.write(account.getAccountName() + "," +
-                             account.getAccountNumber() + "," +
-                             account.getAddress() + "," +
-                             account.getAccountType() + "," +
-                             account.getBalance() + "\n");
+    //         // Write account details
+    //         for (Account account : accounts) {
+    //             // Write each account's details in CSV format
+    //             writer.write(account.getAccountName() + "," +
+    //                          account.getAccountNumber() + "," +
+    //                          account.getAddress() + "," +
+    //                          account.getAccountType() + "," +
+    //                          account.getBalance() + "\n");
+    //         }
+
+    //         System.out.println("Account data saved to " + filePath);
+    //     } catch (IOException e) {
+    //         // Print error message if file cannot be created or written to
+    //         System.out.println("ERROR: Could not save account data to CSV file.");
+    //         e.printStackTrace();
+    //     }
+    // }
+    public void saveToCSV(String filePath) {
+        try {
+            System.out.println("Saving to file: " + filePath); // Debugging log
+            java.io.File file = new java.io.File(filePath);
+            java.io.File parentDir = file.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                System.out.println("Creating directories: " + parentDir.getAbsolutePath());
+                parentDir.mkdirs(); // Create directories if they don't exist
             }
-
-            System.out.println("Account data saved to " + filePath);
-        } catch (IOException e) {
-            // Print error message if file cannot be created or written to
-            System.out.println("ERROR: Could not save account data to CSV file.");
-            e.printStackTrace();
+    
+            try (java.io.FileWriter writer = new java.io.FileWriter(file, true)) {
+                for (Account account : accounts) {
+                    writer.append(account.getAccountName()).append(",")
+                          .append(account.getAccountNumber()).append(",")
+                          .append(account.getAddress()).append(",")
+                          .append(account.getAccountType()).append(",")
+                          .append(String.valueOf(account.getBalance())).append("\n");
+                }
+                System.out.println("Data saved successfully.");
+            }
+        } catch (java.io.IOException e) {
+            System.out.println("An error occurred while saving to CSV: " + e.getMessage());
         }
     }
 
@@ -248,7 +272,9 @@ public class ControlPanel {
             writer.write("Number of accounts: " + accounts.size() + "\n");
             writer.write("Account data:\n");
             for (Account account : accounts) {
-                writer.write(account.getAccountNumber() + "," +
+                writer.write(account.getAccountName() + "," +
+                             account.getAccountName() + "," +
+                             account.getAccountNumber() + "," +
                              account.getAddress() + "," +
                              account.getAccountType() + "," +
                              account.getBalance() + "\n");

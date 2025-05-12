@@ -79,6 +79,17 @@ public class Account
         this.balance += amount;
     }
 
+    // Save account details to a CSV file
+        public void saveToCSV(String filePath) {
+            try (java.io.FileWriter writer = new java.io.FileWriter(filePath, true)) {
+                writer.write(accountname + "," + accountnumber + "," + address + "," + type + "," + balance + "\n");
+            } catch (java.io.IOException e) {
+                System.out.println("An error occurred while saving to CSV: " + e.getMessage());
+            }
+        }
+
+    
+
     //Returning data of the account into a string
     @Override
     public String toString() {

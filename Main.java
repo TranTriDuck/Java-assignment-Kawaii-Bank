@@ -53,12 +53,13 @@ public class Main
 
         // controlpanel instance for managing accounts
         ControlPanel controlPanel = new ControlPanel();
-
-        String myaccountfile = "saveData.txt"; // File name for account data
-        controlPanel.loadData(myaccountfile); // Load
+        //Creating a csv file
+        String myaccountfile = "saveData.csv"; // File name for account data
+        controlPanel.saveToCSV(myaccountfile); // Save account data to CSV file
         //Set up scanner allow for teller put in
         Scanner scanner = new Scanner(System.in);
-    
+        
+    Account account = new Account("John Doe", "123456789", "123 Main St", "Savings", 1000.00);
 
     boolean programcondition = true; // Main loop control variable
         
@@ -178,19 +179,26 @@ public class Main
 
             break;
         case "G":
-            controlPanel.saveData(myaccountfile); // Save account data to CSV file
+           
+            // Save account data to CSV file
+            controlPanel.saveToCSV(myaccountfile); // Save account data to CSV file
             //When user type in "G", Exit the program and save the data
-            // controlpanel.saveAccountDataToCSV(myaccountfile); // Save account data to CSV file
+            controlPanel.saveToCSV(myaccountfile); // Save account data to CSV file
             programcondition = false;
             System.out.println("Exiting the program. Thank you for using Kawaii Bank!");
+
+         
             break;
         
         //In case the teller type in an unexpected variables, characters, or numbers. Print out an error message and ask the teller to try again.
         default:
             System.out.println("Invalid choice. Please try again.");
             break;
-        }
+        } 
+
     }
+
+    
     //Close the scanner
     scanner.close();
     }
